@@ -77,25 +77,35 @@ entity top_basys3 is
 end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
-	
-  -- declare the component of your top-level design unit under test (UUT)
+    -- declare the component of your top-level design unit under test (UUT)
+    component BCDto7Segment is
+        port(
+            BCD_in  : in  std_logic_vector(3 downto 0);
+            seg_out : out std_logic_vector(6 downto 0)
+        );
+    end component;
 
+    -- create wire to connect button to 7SD enable (active-low)
+    signal enable_7sd : std_logic_vector(3 downto 0);
 
-  -- create wire to connect button to 7SD enable (active-low)
-
-  
 begin
-	-- PORT MAPS ----------------------------------------
+    -- PORT MAPS ----------------------------------------
+    -- Port map: wire your component up to the switches and seven-segment display cathodes
+    uut: BCDto7Segment
+        port map(
+            BCD_in  => sw,
+            seg_out => seg
+        );
+    -----------------------------------------------------    
+    
+    -- CONCURRENT STATEMENTS ----------------------------
+    -- wire up active-low 7SD anode (active low) to button (active-high)
+    -- display 7SD 0 only when button pushed
+    -- other 7SD are kept off
+    enable_7sd <= "1110" when btnC = '1' else
+                  "1111";
 
-	--	Port map: wire your component up to the switches and seven-segment display cathodes
-	-----------------------------------------------------	
-	
-	
-	-- CONCURRENT STATEMENTS ----------------------------
-	
-	-- wire up active-low 7SD anode (active low) to button (active-high)
-	-- display 7SD 0 only when button pushed
-	-- other 7SD are kept off
-	-----------------------------------------------------
-	
+    an <= enable_7sd;
+    -----------------------------------------------------
+    
 end top_basys3_arch;
