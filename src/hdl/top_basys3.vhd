@@ -77,35 +77,37 @@ entity top_basys3 is
 end top_basys3;
 
 architecture top_basys3_arch of top_basys3 is 
-    -- declare the component of your top-level design unit under test (UUT)
-    component BCDto7Segment is
-        port(
-            BCD_in  : in  std_logic_vector(3 downto 0);
-            seg_out : out std_logic_vector(6 downto 0)
-        );
-    end component;
+    
+    component sevenSegDecoder is 
+    Port ( i_D : in STD_LOGIC_VECTOR (3 downto 0);
+           o_S : out STD_LOGIC_VECTOR (6 downto 0));
+    end component sevenSegDecoder;
+	
+  -- declare the component of your top-level design unit under test (UUT)
 
-    -- create wire to connect button to 7SD enable (active-low)
-    signal enable_7sd : std_logic_vector(3 downto 0);
+signal w_7SD_EN_n : std_logic;
+  -- create wire to connect button to 7SD enable (active-low)
 
+  
 begin
-    -- PORT MAPS ----------------------------------------
-    -- Port map: wire your component up to the switches and seven-segment display cathodes
-    uut: BCDto7Segment
-        port map(
-            BCD_in  => sw,
-            seg_out => seg
-        );
-    -----------------------------------------------------    
+	-- PORT MAPS ----------------------------------------
+    sevenSegDecoder_inst: sevenSegDecoder
+    port Map(
+    i_D => sw,
+    o_S => seg
     
-    -- CONCURRENT STATEMENTS ----------------------------
-    -- wire up active-low 7SD anode (active low) to button (active-high)
-    -- display 7SD 0 only when button pushed
-    -- other 7SD are kept off
-    enable_7sd <= "1110" when btnC = '1' else
-                  "1111";
-
-    an <= enable_7sd;
-    -----------------------------------------------------
+    );
     
+	--	Port map: wire your component up to the switches and seven-segment display cathodes
+	-----------------------------------------------------	
+	
+	
+	-- CONCURRENT STATEMENTS ----------------------------
+	w_7SD_EN_n <= not btnC;
+	-- wire up active-low 7SD anode (active low) to button (active-high)
+	-- display 7SD 0 only when button pushed
+	an <= (0 => w_7SD_EN_n, others => '1');
+	-- other 7SD are kept off
+	-----------------------------------------------------
+	
 end top_basys3_arch;
