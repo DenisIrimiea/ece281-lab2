@@ -57,7 +57,7 @@ begin
                       i_D = x"F") else '0';
 
     o_S(2) <= c_Sc;
-    c_Sc <= '1' when (i_D = x"3" or
+    c_Sc <= '1' when (i_D = x"2" or
                       i_D = x"C" or
                       i_D = x"E" or 
                       i_D = x"F") else '0';
