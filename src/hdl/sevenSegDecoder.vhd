@@ -59,13 +59,15 @@ begin
     o_S(4) <= (not i_D(3) and i_D(2) and not i_D(1))
         or (not i_D(2) and not i_D(1) and i_D(0))
         or (not i_D(3) and i_D(0));
-    o_S(5) <= '1' when (i_D = "0001") or
-                      (i_D = "0011") or
-                      (i_D = "0100") or
-                      (i_D = "0111") or
-                      (i_D = "1100") else '0';
-    o_S(6) <= '1' when (i_D = "0000") or
-                      (i_D = "0001") or
-                      (i_D = "0111") else '0';
-end Behavioral;
+   o_S(5) <= (not i_D(3) and not i_D(2) and not i_D(1) and i_D(0))
+        or (not i_D(3) and not i_D(2) and i_D(1) and i_D(0))
+        or (not i_D(3) and i_D(2) and not i_D(1) and not i_D(0))
+        or (not i_D(3) and i_D(2) and i_D(1) and i_D(0))
+        or (i_D(3) and i_D(2) and not i_D(1) and not i_D(0));
+        
+   o_S(6) <= (not i_D(3) and not i_D(2) and not i_D(1) and not i_D(0))
+        or (not i_D(3) and not i_D(2) and not i_D(1) and i_D(0))
+        or (not i_D(3) and not i_D(2) and i_D(1) and i_D(0));
+        
+ end Behavioral;
 
